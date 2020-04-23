@@ -27,7 +27,7 @@ while True:
 
 	if (int(time()) - int(start)) >= TIMEOUT:
 		print("WARNING ASLEEP WARNING ASLEEP")
-		# os.system('start scream.m4a')
+		# os.system('start sound_files/scream.m4a')
 		# sleep(3)
 
 	cv2.imshow("Eye Tracking", frame)
