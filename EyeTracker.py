@@ -1,7 +1,6 @@
 import cv2
-from time import time
+from time import time, sleep
 from gaze_tracking import GazeTracking
-# import winsound
 import os
 
 TIMEOUT = 3
@@ -14,36 +13,36 @@ out = cv2.VideoWriter('output.avi', cv2.VideoWriter_fourcc('M','J','P','G'), 20,
 
 while True:
 	# We get a new frame from the cap
-    _, frame = cap.read()
+	_, frame = cap.read()
 
-    # We send this frame to GazeTracking to analyze it
-    eye.refresh(frame)
-    frame = eye.annotated_frame()
+	# We send this frame to GazeTracking to analyze it
+	eye.refresh(frame)
+	frame = eye.annotated_frame()
 
-    if(eye.pupil_left_coords() is None):
-    	cv2.putText(frame, "WARNING: EYES are CLOSED", (90, 60), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 255), 2)
-    	cv2.putText(frame, "Time: " + "%.3f" %(time()-start), (90, 95), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 255), 2)
-    else:
-    	start = time()
+	if(eye.pupil_left_coords() is None):
+		cv2.putText(frame, "WARNING: EYES are CLOSED", (90, 60), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 255), 2)
+		cv2.putText(frame, "Time: " + "%.3f" %(time()-start), (90, 95), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 255), 2)
+	else:
+		start = time()
 
-    if (int(time()) - int(start)) >= TIMEOUT:
-    	print("WARNING ASLEEP WARNING ASLEEP")
-    	# os.system('start scream.wav')
-    	# winsound.PlaySound('scream.wav', winsound.SND_FILENAME)
+	if (int(time()) - int(start)) >= TIMEOUT:
+		print("WARNING ASLEEP WARNING ASLEEP")
+		# os.system('start scream.m4a')
+		# sleep(3)
 
-    cv2.imshow("Eye Tracking", frame)
-    if RECORD:
-        out.write(frame)
+	cv2.imshow("Eye Tracking", frame)
+	if RECORD:
+		out.write(frame)
 
-    value = cv2.waitKey(1)
-    if value == 27:
-        break
-    elif value == ord('r'):
-        RECORD = not RECORD
-        if RECORD:
-            print("Recording Begins")
-        else:
-            print("Recording Ended")
+	value = cv2.waitKey(1)
+	if value == 27:
+		break
+	elif value == ord('r'):
+		RECORD = not RECORD
+		if RECORD:
+			print("Recording Begins")
+		else:
+			print("Recording Ended")
 
 cap.release()
 out.release()
